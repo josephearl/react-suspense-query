@@ -26,17 +26,27 @@ export interface PokeApi {
 }
 
 export class PokeApiClient implements PokeApi {
+  private apiCallCount = 0;
+
   constructor(private readonly baseUrl: string) {}
 
   async getAllPokemon(): Promise<AllPokemonResponse> {
     await delay(1000);
+    this.failEveryOtherCall();
     const res = await fetch(`${this.baseUrl}/pokemon?limit=150`);
     return await res.json();
   }
 
   async getPokemon(id: number): Promise<PokemonResponse> {
     await delay(1000);
+    this.failEveryOtherCall();
     const res = await fetch(`${this.baseUrl}/pokemon/${id}`);
     return await res.json();
+  }
+
+  private failEveryOtherCall(): void {
+    if (this.apiCallCount++ % 2 === 0) {
+      throw new Error("Failed to fetch pokemon");
+    }
   }
 }

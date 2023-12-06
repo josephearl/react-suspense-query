@@ -19,6 +19,7 @@ export function usePokedex(): Pokedex {
   const { data } = useSuspenseQuery({
     queryKey: ["pokedex"],
     queryFn: () => service.getPokedex(),
+    retry: false,
   });
   return data;
 }
@@ -28,6 +29,7 @@ export function usePokedexEntry(id: number): PokedexEntry {
   const { data } = useSuspenseQuery({
     queryKey: ["pokedex", id],
     queryFn: () => service.getPokedexEntry(id),
+    retry: false,
   });
   return data;
 }

@@ -2,25 +2,25 @@ import { type JSX, type ReactNode, Suspense } from "react";
 
 export type Loader<T> = () => T;
 
-export type ChildrenRender<T> = (props: T) => ReactNode;
+export type SuspenseLoaderChildrenRenderFunction<T> = (props: T) => ReactNode;
 
 export interface SuspenseLoaderProps<T> {
   loader: Loader<T>;
-  childrenRender: ChildrenRender<T>;
-  loadingFallback: ReactNode;
+  fallback: ReactNode;
+  children: ReactNode | SuspenseLoaderChildrenRenderFunction<T>;
 }
 
 export function SuspenseLoader<T>({
   loader,
-  childrenRender,
-  loadingFallback,
+  children,
+  fallback,
 }: SuspenseLoaderProps<T>): JSX.Element {
   function Loader(): ReactNode {
     const data = loader();
-    return childrenRender(data);
+    return typeof children === "function" ? children(data) : children;
   }
   return (
-    <Suspense fallback={loadingFallback}>
+    <Suspense fallback={fallback}>
       <Loader />
     </Suspense>
   );

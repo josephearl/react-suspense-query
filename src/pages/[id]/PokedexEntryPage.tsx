@@ -23,11 +23,9 @@ export function PokedexEntryPage({ id }: PokedexEntryPageProps): JSX.Element {
       <QueryErrorBoundary
         fallbackRender={(props) => <ErrorMessage {...props} />}
       >
-        <SuspenseLoader
-          loader={usePokedexEntryWithId}
-          childrenRender={(pokemon) => <PokemonDetails pokemon={pokemon} />}
-          loadingFallback={<Loading />}
-        />
+        <SuspenseLoader loader={usePokedexEntryWithId} fallback={<Loading />}>
+          {(pokemon) => <PokemonDetails pokemon={pokemon} />}
+        </SuspenseLoader>
       </QueryErrorBoundary>
     </div>
   );

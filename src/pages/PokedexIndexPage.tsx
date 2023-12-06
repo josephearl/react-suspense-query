@@ -17,11 +17,9 @@ export function PokedexIndexPage(): JSX.Element {
       <QueryErrorBoundary
         fallbackRender={(props) => <ErrorMessage {...props} />}
       >
-        <SuspenseLoader
-          loader={usePokedex}
-          childrenRender={(pokedex) => <Pokedex pokedex={pokedex} />}
-          loadingFallback={<Loading />}
-        />
+        <SuspenseLoader loader={usePokedex} fallback={<Loading />}>
+          {(pokedex) => <Pokedex pokedex={pokedex} />}
+        </SuspenseLoader>
       </QueryErrorBoundary>
     </>
   );
